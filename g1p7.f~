@@ -248,7 +248,7 @@
        Y_POS = NINT((((M*X)+B)-Y_MIN)/(Y_MAX-Y_MIN)*59)+1
         IF (LINE(Y_POS) .EQ. " " .OR. LINE(Y_POS) .EQ. "+" .OR. 
      &   LINE(Y_POS) .EQ. "|" .OR. LINE(Y_POS) .EQ. "-" ) THEN
-          LINE(Y_POS) = "."       
+          LINE(Y_POS) = "*"       
          ELSE
           LINE(Y_POS) = "o"
          END IF
