@@ -32,17 +32,37 @@
            B(IPEAK)=B(IROW)
            B(IROW)=TEMP
           END IF
-
- 
+          
+          DO JROW=1, N
+           IF(JROW .NE. IROW) THEN
+            FACTOR = -A(JROW,IROW)/A)(IROW,IROW)
+            DO KCOL=1, N
+             A(JROW,KCOL) = A(IROW,KCOL)*FACTOR+A(JROW,KCOL)
+            END DO
+            B(JROW) = B(IROW)*FACTOR + B(JROW)
+           END IF
+          END DO
+        END DO
+        
+        DO IROW=1, N
+         B(IROW)=B(IROW)/A(IROW,IROW)
+         A(IROW,IROW)=1
+        END DO
+        
+        ERROR =0
+      END SUBROUTINE GAUSS-JORDAN
+      
       PROGRAM GAUSS-JORDAN
       
       IMPLICIT NONE
  
       LOGICAL :: FLAG
+      INTEGER, PARAMETER :: MAX_SIZE = 10
       CHARACTER*10 IFILENAME
       CHARACTER*10 OFILENAME
-      INTEGER :: IERROR, OERROR, OSELECTOR, N
-      REAL :: X(10,10), S(1,10)
+      INTEGER :: IERROR, OERROR, OSELECTOR, N, I, J, ERROR
+      REAL, DIMENSION (MAX_SIZE, MAX_SIZE) :: A(10,10)
+      REAL, DIMENSION (MAX_SIZE) :: B(10)
 
       FLAG = .TRUE.
 
@@ -96,15 +116,31 @@
 
 !      Skips this entire section if the user quits
       IF (FLAG .EQV. .TRUE.) THEN
-!      Reads in the number of x,y points
+!      Reads in the number of equations
       READ (1, *) N
        IF (N .LE. 10 .AND. N .GE. 0) THEN
         DO I=1, N
-         READ (1, *, IOSTAT=READING) (X(I,J), J=1, N)
+         READ (1, *, IOSTAT=READING) (A(I,J), J=1, N), B(I)
         END DO
-    
-      CALL SUBROUTINE GAUSS_JORDAN(N,X,S)
-       
+        
+        WRITE(*,"(/,1X,'COEFFICIENTS BEFORE CALL:')")
+        DO I=1,N
+         WRITE(*,"1X,7F11.4)") (A(I,J), J=1, N), B(I)
+        END DO
+        
+        CALL SUBROUTINE GAUSS_JORDAN(A, B, MAX_SIZE, N, ERROR)
+        
+        IF (ERROR .NE. 0) THEN
+         WRITE (*, 1010)
+ 1010  FORMAT(/1X, 'ZERO PIVOT ENCOUNTERED! NO UNIQUE SOLUTION'
+        ELSE 
+         WRITE (*,"(/,1X, 'COEFFICIENTS AFTER CALL:')")
+         DO I=1, N
+          WRITE (*,"(1X, 7F11.4)") (A(I,J), J=1,N), B(I)
+         END DO
+         
+         
+        
 
 
 
