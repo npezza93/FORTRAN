@@ -1,4 +1,4 @@
-      SUBROUTINE GAUSS_JORDAN (N,A,B, ERROR)
+      SUBROUTINE G_J (N,A,B, ERROR)
         INTEGER, INTENT(IN) :: N
         REAL, INTENT(INOUT), DIMENSION(N,N) :: A
         REAL, INTENT(INOUT), DIMENSION(N) :: B
@@ -50,7 +50,7 @@
         END DO
         
         ERROR =0
-      END SUBROUTINE GAUSS-JORDAN
+      END SUBROUTINE G_J
       
       PROGRAM GAUSS-JORDAN
       
@@ -128,7 +128,7 @@
          WRITE(*,"1X,7F11.4)") (A(I,J), J=1, N), B(I)
         END DO
         
-        CALL SUBROUTINE GAUSS_JORDAN(A, B, MAX_SIZE, N, ERROR)
+        CALL SUBROUTINE G_J(A, B, MAX_SIZE, N, ERROR)
         
         IF (ERROR .NE. 0) THEN
          WRITE (*, 1010)
@@ -138,6 +138,16 @@
          DO I=1, N
           WRITE (*,"(1X, 7F11.4)") (A(I,J), J=1,N), B(I)
          END DO
+         WRITE (*,"/,1X,'THE SOLUTIONS ARE:')")
+         DO I=1, N
+          WRITE (*,"(3X,'X(',I2,')= ',F16.6)") I, B(I)
+         END DO
+         
+         END IF
+        END IF
+       END IF
+       END PROGRAM GAUSS_JORDAN
+          
          
          
         
