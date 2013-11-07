@@ -246,12 +246,7 @@
        INDEX = 1
        DO WHILE (INDEX .LE. NUM_PTS)
        Y_POS = NINT((((M*X)+B)-Y_MIN)/(Y_MAX-Y_MIN)*59)+1
-        IF (LINE(Y_POS) .EQ. " " .OR. LINE(Y_POS) .EQ. "+" .OR. 
-     &   LINE(Y_POS) .EQ. "|" .OR. LINE(Y_POS) .EQ. "-" ) THEN
           LINE(Y_POS) = "."       
-         ELSE
-          LINE(Y_POS) = "o"
-         END IF
         FOUND = .FALSE.
         DO WHILE (.NOT. FOUND .AND. INDEX .LE. NUM_PTS)
          IF (PTS(INDEX,1) .GT. X-(X_STEP/2) 
@@ -263,14 +258,12 @@
         END DO
         IF (INDEX .LE. NUM_PTS) THEN
          Y_POS = NINT((PTS(INDEX,2)-Y_MIN)/(Y_MAX-Y_MIN)*59)+1
-         IF (LINE(Y_POS) .EQ. " " .OR. LINE(Y_POS) .EQ. "+" .OR. 
-     &            LINE(Y_POS) .EQ. "|" .OR. LINE(Y_POS) .EQ. "-" ) THEN
-          LINE(Y_POS) = "*"
-          INDEX=INDEX+1        
-         ELSE
+         IF (LINE(Y_POS) .EQ. "*" .OR. LINE(Y_POS) .EQ. ".") THEN
           LINE(Y_POS) = "o"
-          INDEX=INDEX+1
+         ELSE
+          LINE(Y_POS) = "*"
          END IF
+         INDEX=INDEX+1
         END IF
        END DO
        IF (MOD(I,5) .EQ. 0) THEN
